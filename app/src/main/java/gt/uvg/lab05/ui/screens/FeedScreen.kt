@@ -1,3 +1,20 @@
+/*
+ * Declaración de uso de IA:
+ * Durante el desarrollo de este laboratorio, se utilizó la asistencia de Inteligencia
+ * Artificial (Gemini / OpenAI) para la reestructuración de los componentes en archivos
+ * separados, la sugerencia de paletas de colores y la resolución de dudas sobre la
+ * aplicación de tipografías (FontFamily). Todo el código resultante fue revisado,
+ * comprendido y adaptado a los requisitos del laboratorio por el autor.
+ *
+ * ---
+ * Respuestas de la Ruta B:
+ * 1.Al quitar el weight de la columna del artículo esta intenta ocupar
+ *      todo el ancho necesario para que los textos se acomoden en una sola linea
+ *       y eso afecta al cuadrado, porque lo saca de la visibilidad de la pantalla.
+ * 2. Pasar el Modifier por parámetro nos ayuda a reutilizar componentes. Dentro solo está lo que hace
+ *      y afuera se maneja el diseño, así el componente no se ata a un diseño en específico.
+ */
+
 package gt.uvg.lab05.ui.screens
 
 import androidx.compose.foundation.background
@@ -18,14 +35,15 @@ fun FeedScreen(modifier: Modifier = Modifier) {
     val articles = ArticleRepository.getList()
     //Se uso IA para los colores
     val circleColors = listOf(
-        Color(0xFFF0B376), // Naranja pastel
-        Color(0xFF8BB1CB), // Celeste pastel
-        Color(0xFFC1A4B9)  // Morado pastel
+        Color(0xFFFFD54F), // Amarillo estrella
+        Color(0xFFF48FB1), // Rosa flor
+        Color(0xFF64B5F6)  // Azul cielo
     )
+
     val squareColors = listOf(
-        Color(0xFFE4D6C3), // Beige claro
-        Color(0xFFC4D1BE), // Verde musgo pálido
-        Color(0xFFD7C2A6)  // Arena oscuro
+        Color(0xFF81C784), // Verde árbol
+        Color(0xFF3949AB), // Azul profundo espacial
+        Color(0xFFAED581)  // Verde claro natural
     )
 
     Column(
