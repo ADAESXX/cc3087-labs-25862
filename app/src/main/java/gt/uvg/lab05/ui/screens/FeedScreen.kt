@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -23,7 +21,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,7 +49,7 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         mutableStateOf(false)
     }
     //aplaudir - contador
-    var applauseCount by remember {
+    var applauseCount by rememberSaveable {
         mutableStateOf(0)
     }
 
@@ -76,8 +73,14 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         //SWITCH
         val matchesShortReads = !showShortReadsOnly || article.readingMinutes <= 5
 
+        //filtro de pestaña
+        val matchesTab= when (selectedTab){
+            "Siguiendo" -> article.isAuthorFollowed
+            "Destacados" -> article.isFeatured
+            else -> true
+        }
 
-        match && matchesShortReads
+        match && matchesShortReads && matchesTab
     }
 
     val resultCount = filteredArticles.size
@@ -86,7 +89,6 @@ fun FeedScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
         TopBar()
@@ -167,27 +169,49 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         )
 
         //resultados
-
-
-        // articulos filtrados
-        filteredArticles.forEachIndexed { index, article ->
-            MediumArticle(
-                article = article,
-                circleColor = circleColors[index % circleColors.size],
-                squareColor = squareColors[index % squareColors.size]
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Box(
+        if (filteredArticles.isEmpty()) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Color(0xFFE0E0E0))
-            )
+                    .padding(vertical = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "No se encontraron artículos"
+                )
 
+                Spacer(
+                    modifier = Modifier.height(8.dp)
+                )
+
+                Text(
+                    text = "Cambia la pestaña, la búsqueda o el filtro.",
+                    color = Color.Gray
+                )
+            }
+
+        } else {
+
+            // articulos filtrados
+            filteredArticles.forEachIndexed { index, article ->
+                MediumArticle(
+                    article = article,
+                    circleColor = circleColors[index % circleColors.size],
+                    squareColor = squareColors[index % squareColors.size]
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Color(0xFFE0E0E0))
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
