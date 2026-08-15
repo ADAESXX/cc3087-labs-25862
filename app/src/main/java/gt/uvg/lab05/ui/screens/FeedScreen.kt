@@ -49,9 +49,7 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         mutableStateOf(false)
     }
     //aplaudir - contador
-    var applauseCount by rememberSaveable {
-        mutableStateOf(0)
-    }
+    var applauseCount = 0
 
     //Se uso IA para los colores
     val circleColors = listOf(
@@ -163,6 +161,7 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         )
 
         //resultados
+
 
         // articulos filtrados
         filteredArticles.forEachIndexed { index, article ->
