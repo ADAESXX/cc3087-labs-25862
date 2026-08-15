@@ -13,10 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import gt.uvg.lab05.ui.screens.FeedScreen
 import gt.uvg.lab05.ui.theme.Lab05Theme
+import android.util.Log
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("LAB6_25862", "onCreate")
         enableEdgeToEdge()
         setContent {
             Lab05Theme {
@@ -27,6 +29,30 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("LAB6_25862", "onStart")
+    }
+    override fun onResume() {
+        super.onResume()
+        Log.d("LAB6_25862", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("LAB6_25862", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("LAB6_25862", "onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("LAB6_25862", "onDestroy")
     }
 }
 
