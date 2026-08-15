@@ -1,5 +1,5 @@
 package gt.uvg.lab05.model
 
 data class Article(
-    val name: String, val title: String, val resume: String, val readTime: Int, val creationDate: String
+    val author: String, val title: String, val excerpt: String, val readingMinutes: Int, val date: String, val isAuthorFollowed : Boolean, val isFeatured: Boolean
 )

@@ -5,25 +5,31 @@ import gt.uvg.lab05.model.Article
 object ArticleRepository {
     fun getList() = listOf(
         Article(
-            name = "Abigail Escobar",
+            author = "Abigail Escobar",
             title = "Smart Baggage System (SBS): AI-Powered Load Security",
-            resume = "Una arquitectura técnica para el Airbus Fly Your Ideas 2026 enfocada en la seguridad comercial.",
-            readTime = 5,
-            creationDate = "12 mar"
+            excerpt = "Una arquitectura técnica para el Airbus Fly Your Ideas 2026 enfocada en la seguridad comercial.",
+            readingMinutes = 5,
+            date = "12 mar",
+            isAuthorFollowed = false,
+            isFeatured = true
         ),
         Article(
-            name = "Daniel Escobar",
+            author = "Daniel Escobar",
             title = "Tecnologías viables en agricultura",
-            resume = "En agricultura se requieren muchos elementos de IoT para un correcto funcionamiento.",
-            readTime = 8,
-            creationDate = "9 ago"
+            excerpt = "En agricultura se requieren muchos elementos de IoT para un correcto funcionamiento.",
+            readingMinutes = 8,
+            date = "9 ago",
+            isAuthorFollowed = true,
+            isFeatured = false
         ),
         Article(
-            name = "Eiceny Sandoval",
+            author = "Eiceny Sandoval",
             title = "ChatGPT y su uso en programación",
-            resume = "Muchos estudiantes dependen de la IA para programar, cuando realmente debería de ser una herramienta",
-            readTime = 4,
-            creationDate = "3 jul"
+            excerpt = "Muchos estudiantes dependen de la IA para programar, cuando realmente debería de ser una herramienta",
+            readingMinutes = 14,
+            date = "3 jul",
+            isAuthorFollowed = true,
+            isFeatured = false
         )
     )
 }

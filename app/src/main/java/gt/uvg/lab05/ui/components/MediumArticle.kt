@@ -47,7 +47,7 @@ fun MediumArticle(
                         .background(circleColor)
                 )
                 Text(
-                    text = article.name,
+                    text = article.author,
                     color = Color.DarkGray,
                     fontSize = 12.sp,
                     fontFamily = FontFamily.Serif
@@ -65,7 +65,7 @@ fun MediumArticle(
 
 
             Text(
-                text = article.resume,
+                text = article.excerpt,
                 fontSize = 14.sp,
                 color = Color.Gray,
                 maxLines = 2,
@@ -74,7 +74,7 @@ fun MediumArticle(
             )
 
             Text(
-                text = "${article.readTime} min de lectura · ${article.creationDate}",
+                text = "${article.readingMinutes} min de lectura · ${article.date}",
                 fontSize = 12.sp,
                 color = Color.Gray,
                 fontFamily = FontFamily.Serif

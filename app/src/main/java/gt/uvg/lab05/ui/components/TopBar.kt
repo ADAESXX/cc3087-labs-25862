@@ -51,7 +51,7 @@ fun TopBar(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .size(32.dp)
                 .clip(CircleShape)
-                .background(Color(0xFF9EBE9E)) // Verde pastel simulado
+                .background(Color(0xFF9EBE9E))
         )
     }
 }
