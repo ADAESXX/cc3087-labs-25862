@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
@@ -29,12 +28,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gt.uvg.lab05.data.ArticleRepository
+import gt.uvg.lab05.model.Article
 import gt.uvg.lab05.ui.components.MediumArticle
 import gt.uvg.lab05.ui.components.Tabs
 import gt.uvg.lab05.ui.components.TopBar
 import gt.uvg.lab05.ui.theme.SkyBlue
 
-@Preview(showSystemUi = true, device = "spec:width=411dp,height=891dp", showBackground = true)
+
 @Composable
 fun FeedScreen(modifier: Modifier = Modifier) {
     val articles = ArticleRepository.getList()
@@ -53,19 +53,6 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         mutableStateOf(0)
     }
 
-    //Se uso IA para los colores
-    val circleColors = listOf(
-        Color(0xFFFFD54F),
-        Color(0xFFF48FB1),
-        Color(0xFF64B5F6)
-    )
-
-    val squareColors = listOf(
-        Color(0xFF81C784),
-        Color(0xFF3949AB),
-        Color(0xFFAED581)
-    )
-
     //Lista filtrada
     val filteredArticles = articles.filter { article ->
         val match = article.title.contains(searchQuery, ignoreCase = true) || article.author.contains(searchQuery, ignoreCase = true)
@@ -83,8 +70,80 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         match && matchesShortReads && matchesTab
     }
 
-    val resultCount = filteredArticles.size
+    FeedContent(
+        visibleArticles = filteredArticles,
+        searchQuery = searchQuery,
+        onSearchQueryChange = {searchQuery = it},
+        showShortReadsOnly = showShortReadsOnly,
+        onShortReadsOnlyChange = {checked ->  showShortReadsOnly = checked},
+        selectedTab = selectedTab ,
+        onTabSelected = {newTab -> selectedTab = newTab},
+        applauseCount =  applauseCount,
+        onApplaud = { applauseCount++ },
+        modifier = modifier
+    )
 
+}
+
+@Preview(showSystemUi = true, device = "spec:width=411dp,height=891dp", showBackground = true)
+@Composable
+fun FeedContentPreviewEmpty() {
+    FeedContent(
+        visibleArticles = emptyList(),
+        searchQuery = "",
+        onSearchQueryChange = {},
+        showShortReadsOnly = false,
+        onShortReadsOnlyChange = {},
+        selectedTab = "Para ti",
+        onTabSelected = {},
+        applauseCount = 0,
+        onApplaud = {}
+    )
+}
+
+@Preview(showSystemUi = true, device = "spec:width=411dp,height=891dp", showBackground = true)
+@Composable
+fun FeedContentPreview(){
+    FeedContent(
+        visibleArticles = ArticleRepository.getList(),
+        searchQuery = "Tecnologías viables en agricultura",
+        onSearchQueryChange = {},
+        showShortReadsOnly = false,
+        onShortReadsOnlyChange = {},
+        selectedTab = "Para ti",
+        onTabSelected = {},
+        applauseCount = 3,
+        onApplaud = {}
+    )
+}
+@Composable
+
+fun FeedContent(
+    visibleArticles: List<Article>,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    showShortReadsOnly: Boolean,
+    onShortReadsOnlyChange: (Boolean) -> Unit,
+    selectedTab: String,
+    onTabSelected: (String) -> Unit,
+    applauseCount: Int,
+    onApplaud: () -> Unit,
+    modifier: Modifier = Modifier
+
+){
+
+    //Se uso IA para los colores
+    val circleColors = listOf(
+        Color(0xFFFFD54F),
+        Color(0xFFF48FB1),
+        Color(0xFF64B5F6)
+    )
+
+    val squareColors = listOf(
+        Color(0xFF81C784),
+        Color(0xFF3949AB),
+        Color(0xFFAED581)
+    )
 
     Column(
         modifier = modifier
@@ -95,20 +154,20 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(24.dp))
         Tabs(
             selectedTab = selectedTab,
-            onTabSelected = {newTab -> selectedTab = newTab}
+            onTabSelected = onTabSelected
         )
         Spacer(modifier = Modifier.height(16.dp))
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(Color(0xFFE0E0E0))
         )
         Spacer(modifier = Modifier.height(16.dp))
-    //busqueda
+        //busqueda
         OutlinedTextField(
             value = searchQuery,
-            onValueChange = { newQuery -> searchQuery = newQuery },
+            onValueChange = onSearchQueryChange,
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text("Buscar por título o autor") },
             singleLine = true
@@ -125,7 +184,7 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         ) {
             Switch(
                 checked = showShortReadsOnly,
-                onCheckedChange = { checked -> showShortReadsOnly = checked },
+                onCheckedChange = onShortReadsOnlyChange,
                 colors = SwitchDefaults.colors(checkedTrackColor = SkyBlue)
             )
 
@@ -137,7 +196,7 @@ fun FeedScreen(modifier: Modifier = Modifier) {
                 modifier =Modifier.width(40.dp)
             )
             Text(
-                text = "$resultCount resultados",
+                text = "${visibleArticles.size} resultados",
                 color = SkyBlue
             )
 
@@ -153,7 +212,7 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         ) {
 
             TextButton(
-                onClick = { applauseCount++ },
+                onClick = onApplaud,
                 border = BorderStroke(2.dp, Color.Black)
             ) {
                 Text(
@@ -169,7 +228,7 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         )
 
         //resultados
-        if (filteredArticles.isEmpty()) {
+        if (visibleArticles.isEmpty()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -194,7 +253,7 @@ fun FeedScreen(modifier: Modifier = Modifier) {
         } else {
 
             // articulos filtrados
-            filteredArticles.forEachIndexed { index, article ->
+            visibleArticles.forEachIndexed { index, article ->
                 MediumArticle(
                     article = article,
                     circleColor = circleColors[index % circleColors.size],
